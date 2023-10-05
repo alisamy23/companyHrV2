@@ -1,0 +1,317 @@
+﻿@model company.BL.Model.EmployeeVM
+@inject company.BL.Interface.IReligionRep religinRep
+@inject company.BL.Interface.IGenderRep genderRep
+
+@{
+    ViewBag.Title = "Add Employee";
+    // var x = emplo.GetAll();
+}
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Add Employee</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            </div>
+            <div class="body">
+                <form id="form_validation" asp-asp-controller="Department" asp-action="delete" method="post">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="employeeName" readonly />
+                                    <label class="form-label">Employee Name </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="phone1" readonly />
+                                    <label class="form-label">phone1 </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="phone2" readonly />
+                                    <label class="form-label">phone2 </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="address" readonly />
+                                    <label class="form-label"> address </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="job.jobName" readonly />
+                                    <label class="form-label"> Job Name </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <select asp-for="deprtmentId" id="deprtmentId" class="form-control readOnly show-tick">
+                                    <option value="">-- Please select department  --</option>
+
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label"> religion </label>
+
+                                <div class="form-line" id="Religion">
+
+                                    @{
+                                        foreach (var item in religinRep.GetAll())
+                                        {
+                                            <input type="radio" value="@item.id" asp-for="religionId" id="religionId+@item.id" class="with-gap readOnly">
+                                            <label for="religionId+@item.id" class="m-l-20 readOnly">@item.religionName</label>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="nationalId" />
+                                    <label class="form-label"> nationalId </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" asp-for="birthdate" />
+                                    <label class="form-label"> birthdate </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="startDate" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" />
+                                    <label class="form-label"> startDate </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="endDate" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" />
+                                    <label class="form-label"> endDate </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group" form-float">
+                                <div class="form-line">
+
+                                    <input checked="checked" class="readOnly"
+                                           id="isAvtive"
+                                           name="isAvtive"
+                                           type="checkbox"
+                                           value="true" />
+                                    <label class="readOnly" for="isAvtive">Employee is  active ?</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label "> gender </label>
+                                <div class="form-line ">
+
+                                    @{
+                                        foreach (var item in genderRep.GetAll())
+                                        {
+                                            <input type="radio" value="@item.id" asp-for="genderId" id="genderId+@item.id" class="with-gap readOnly">
+                                            <label for="genderId+@item.id" class="m-l-20 readOnly">@item.genderName</label>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <button class="btn btn-primary waves-effect" type="submit">Delete</button>
+                    <button class="btn btn-primary waves-effect" type="reset">Cancel</button>
+                    <a asp-controller="Employees" asp-action="index" class="btn btn-success">Back</a>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section MicrosoftValidation{
+
+    <script>
+
+        $(function () {
+
+            $("#deprtmentId").empty();
+            $("#deprtmentId").append("<option value='0'>Choose Department</option>");
+            $.ajax({
+                type: "GET",
+                url: "/Department/getAllDepartment",
+                data: {},
+                success: function (res) {
+                    console.log(res);
+                    $.each(res, function (i, e) {
+                        $("#deprtmentId").append("<option value='" + e.id + "'>" + e.name + "</option>");
+                    });
+                    $("#deprtmentId").val(@Model.deprtmentId);
+
+                }
+            });
+        });
+    </script>
+
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+}
+
+@{
+    ViewBag.Title = "Delete Employee";
+}
+
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Delete Employee</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            </div>
+            <div class="body">
+                <form id="form_validation" asp-asp-controller="Department" asp-action="Delete" method="post">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="employeeName" readonly="readonly" />
+                                    <label class="form-label">Employee Name </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="phone1" readonly="readonly" />
+                                    <label class="form-label">phone1 </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="phone2" readonly="readonly" />
+                                    <label class="form-label">phone2 </label>
+                                    <span asp-validation-for="phone2" class="text-danger "></span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="address" readonly="readonly" />
+                                    <label class="form-label"> address </label>
+
+                                </div>
+                            </div>
+S
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="nationalId" readonly="readonly" />
+                                    <label class="form-label"> nationalId </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" asp-for="birthdate" disabled />
+                                    <label class="form-label"> birthdate </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="startDate" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" disabled />
+                                    <label class="form-label"> startDate </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control readOnly" asp-for="endDate" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" disabled />
+                                    <label class="form-label"> endDate </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group" form-float">
+                                <div class="form-line">
+
+                                    <input checked="checked" class="readOnly"
+                                           id="isAvtive"
+                                           name="isAvtive"
+                                           type="checkbox"
+                                           value="true" disabled />
+                                    <label class="readOnly" for="isAvtive">Employee is  active ?</label>
+                                </div>
+                            </div>
+
+@*                             <div class="form-group">
+                                <label class="form-label "> gender </label>
+                                <div class="form-line ">
+                                    @{
+                                        foreach (var item in gender.GetAll())
+                                        {
+                                            <input type="radio" value="@item.id" asp-for="genderId" id="genderId+@item.id" class="with-gap" disabled>
+                                            <label for="genderId+@item.id">@item.genderName</label>
+                                        }
+                                    }
+
+                                </div>
+                            </div> *@
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <button class="btn btn-primary waves-effect" type="submit">delete</button>
+                    <a asp-controller="Employees" asp-action="index" class="btn btn-success">Back</a>
+
+
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

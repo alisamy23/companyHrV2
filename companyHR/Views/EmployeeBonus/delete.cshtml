@@ -1,0 +1,85 @@
+﻿@model company.BL.Model.EmployeeBounsVM
+@inject company.BL.Interface.IReligionRep religinRep
+@inject company.BL.Interface.IGenderRep genderRep
+
+@{
+    ViewBag.Title = "Delete Employee";
+    // var x = emplo.GetAll();
+}
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Delete Employee</h2>
+
+            </div>
+            <div class="body">
+                <form id="form_validation" asp-asp-controller="Department" asp-action="delete" method="post">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" asp-for="employee.employeeName" readonly="readonly" />
+                                    <label class="form-label">Employee Name </label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" asp-for="bonus.bonusName" readonly="readonly" />
+                                    <label class="form-label">Bonus Name</label>
+
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" asp-for="bonus.bonusValue" readonly="readonly" />
+                                    <label class="form-label">Vacation Cost</label>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <button class="btn btn-primary waves-effect" type="submit">Delete</button>
+                    <button class="btn btn-primary waves-effect" type="reset">Cancel</button>
+                    <a asp-controller="Employees" asp-action="index" class="btn btn-success">Back</a>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section MicrosoftValidation{
+
+    <script>
+
+        $(function () {
+
+            $("#deprtmentId").empty();
+            $("#deprtmentId").append("<option value='0'>Choose Department</option>");
+            $.ajax({
+                type: "GET",
+                url: "/Department/getAllDepartment",
+                data: {},
+                success: function (res) {
+                    console.log(res);
+                    $.each(res, function (i, e) {
+                        $("#deprtmentId").append("<option value='" + e.id + "'>" + e.name + "</option>");
+                    });
+                }
+            });
+        });
+    </script>
+
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+}
